@@ -3,25 +3,24 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
+from mealDataclass import MealDatabase
+
 
 class BaseFirebase:
-    def __init__(self, loop: asyncio.AbstractEventLoop, **kwargs):
+    def __init__(self, loop: asyncio.AbstractEventLoop, default_path: str | None = None):
         self.loop = loop
-        self.firebase_dir = None
+        self.card = credentials.Certificate("./token.json")
+        firebase_admin.initialize_app(self.card)
 
-    def init_db(self, card: credentials.Certificate = None, database_url: str = None):
-        firebase_admin.initialize_app(card, {
-            "databaseURL": database_url
-        })
+        self.firebase_dir = db.reference(default_path)
 
-        self.firebase_dir = db.reference()
-
-    def change_path(self, change_path):
-        self.firebase_dir = db.reference(path=change_path)
-
-    def update_db(self, data=None):
+    def update_data(self, path: str | None = None, data: MealDatabase | None = None):
+        self.firebase_dir = db.reference(path=path)
         self.firebase_dir.update(data)
 
     @property
-    def get_db(self):
-        return self.firebase_dir.get()
+    def get_data(self, path: str | None = None, param: str | None = None) -> MealDatabase:
+        self.firebase_dir = db.reference(path=path)
+        data = self.firebase_dir.get()
+
+        return data

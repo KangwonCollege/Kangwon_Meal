@@ -19,6 +19,8 @@ class DormitoryMeal(BaseMeal):
     async def meal(self, date: datetime.date = None) -> DormitoryResponse:
         if date not in self.data:
             await self.update(date)
+        if date is None:
+            date = datetime.date.today()
         return self.data[date]
 
     async def update(self, date: datetime.date = None):
