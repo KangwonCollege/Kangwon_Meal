@@ -1,13 +1,13 @@
 import logging
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 
 from utils.directory import directory
 from utils.import_supporter import ImportSupporter
 
 app = FastAPI()
-background_scheduler = BackgroundScheduler()
+background_scheduler = AsyncIOScheduler()
 log = logging.getLogger(__name__)
 
 view_image_supporter = ImportSupporter(app)
