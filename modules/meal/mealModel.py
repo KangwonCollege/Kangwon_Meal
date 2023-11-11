@@ -22,7 +22,7 @@ if __name__ == "__main__":
     print(MealModel(
         date="2",
         building="s",
-        meal=MealInfoModel(breakfast=MealInfo(meal=["test,", "test2"]))
+        meal=MealInfoModel(breakfast=[MealInfo(name="test11", meal=["test,", "test2"])], lunch=None, dinner=None)
     ).model_dump_json(indent=4))
 
     data = {"test": 1, "test2": 2}
