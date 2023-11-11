@@ -1,35 +1,21 @@
-from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import String, ForeignKey, Enum
+from sqlalchemy.orm import mapped_column, Mapped, relationship
+from typing import TYPE_CHECKING
 
-from models.base import Base
+from models.database.base import Base
+from models.meal_type import MealType
+
+
+if TYPE_CHECKING:
+    from .meal_info import MealInfo
 
 
 class Meal(Base):
     __tablename__ = "meal"
 
-    name = Column(String(32), nullable=True)
-    meal = Column(list)
-    time = Column(String(32))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name = mapped_column(String(32), nullable=True)
+    type = mapped_column(Enum(MealType))
 
-
-class MealTime(Base):
-    __tablename__ = "meal_info"
-
-    breakfast = Column(Integer, nullable=True)
-    lunch = Column(Integer, nullable=True)
-    dinner = Column(Integer, nullable=True)
-
-
-class MealInfo(Base):
-    __tablename__ = "meal"
-    id = Column(Integer, primary_key=True)
-    date = Column(Integer)
-    building = Column(Integer)
-    meal = relationship(
-        "meal_info",
-        cascade="all,delete-orphan",
-        back_populates="submitter",
-        uselist=True,
-    )
-
-
+    parent_id: Mapped[int] = mapped_column(ForeignKey("meal_info.id"))
+    # parent: Mapped["MealInfo"] = relationship(back_populates="meal")
