@@ -5,10 +5,10 @@ from sqlalchemy.sql import select
 from sqlalchemy.sql import exists
 
 from models import database
-from service.base_session import BaseSession
+from repository.base_repository import BaseRepository
 
 
-class UserSession(BaseSession):
+class UserRepository(BaseRepository):
     def __init__(self, factory: async_sessionmaker):
         super().__init__(factory)
 
