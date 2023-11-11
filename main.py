@@ -20,7 +20,7 @@ task_image_supporter.load_modules('tasks', directory, after_loaded=lambda: backg
 
 host = "127.0.0.1"
 port = 8000
-app_name = "routers.meal:app"
+app_name = "routers.router:app"
 
 if __name__ == "__main__":
     config = uvicorn.Config(app=app_name, host=host, port=port, reload=True)

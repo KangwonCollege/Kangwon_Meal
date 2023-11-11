@@ -4,9 +4,9 @@ from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine
+from datetime import datetime
 
 from utils.getConfig import get_config
-# from modules import post, ping
 
 
 app = FastAPI()
@@ -42,6 +42,16 @@ async def shutdown():
     print("==========DB Disconnect==========")
 
 
-# app.include_router(post.router)
-# app.include_router(ping.router)
-# app.include_router(google_login.router)
+@app.get("/")
+async def ping():
+    print("main point")
+    return {"respone": "pong"}
+
+
+@app.get("/")
+async def get_meal(building: str, date: datetime):
+    return {
+        "meal": "a",
+        "building": building,
+        "date": date
+    }

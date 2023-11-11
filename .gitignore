@@ -161,3 +161,4 @@ cython_debug/
 
 # token
 token.json
+config/token.ini

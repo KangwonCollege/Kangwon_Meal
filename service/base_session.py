@@ -5,7 +5,7 @@ from typing import Callable, Coroutine, Any, TypeVar
 T = TypeVar('T')
 
 
-class BaseRepository:
+class BaseSession:
     def __init__(self, factory: async_sessionmaker):
         self.factory = factory
 
