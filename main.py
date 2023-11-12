@@ -2,6 +2,7 @@ import logging
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
+import uvicorn
 
 from utils.directory import directory
 from utils.import_supporter import ImportSupporter
