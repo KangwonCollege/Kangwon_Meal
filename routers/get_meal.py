@@ -27,16 +27,7 @@ async def get_meal(
         _building_for_fliter = list(Building)
 
     result = await session.get_meal(_building_for_fliter, date)
-    convert_json_meal = lambda x: [{"name": y.name, "meal": [y.name]} for y in x]
-    return [{
-        "building": str(x.building),
-        "date": x.date,
-        "meal": {
-            "breakfast": convert_json_meal(await x.awaitable_attrs.breakfast),
-            "lunch": convert_json_meal(await x.awaitable_attrs.lunch),
-            "dinner": convert_json_meal(await x.awaitable_attrs.dinner)
-        }
-    } for x in result]
+    return result
 
 
 def setup(client: FastAPI, _db: async_sessionmaker):

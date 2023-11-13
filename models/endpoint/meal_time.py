@@ -3,6 +3,6 @@ from models.endpoint.meal import Meal
 
 
 class MealTime(BaseModel):
-    breakfast: list[Meal]
-    lunch: list[Meal]
-    dinner: list[Meal]
+    breakfast: list[Meal] = list()
+    lunch: list[Meal] = list()
+    dinner: list[Meal] = list()
