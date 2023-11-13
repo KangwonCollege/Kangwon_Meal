@@ -27,7 +27,7 @@ async def get_meal(
         _building_for_fliter = list(Building)
 
     result = await session.get_meal(_building_for_fliter, date)
-    return result
+    return [await MealInfoEndpoint.model_validate_sql(x) for x in result]
 
 
 def setup(client: FastAPI, _db: async_sessionmaker):
