@@ -9,6 +9,7 @@ from sqlalchemy.sql import select
 from config.config import get_config
 from models.building import Building
 from models.meal_type import MealType
+from models.database.restaurant import Resaurant
 from models.database.meal import Meal
 from models.database.meal_info import MealInfo
 
@@ -74,25 +75,35 @@ async def main():
     async with engine.begin() as conn:
         conn: AsyncConnection
         await conn.run_sync(MealInfo.metadata.create_all)
+        await conn.run_sync(Resaurant.metadata.create_all)
         await conn.run_sync(Meal.metadata.create_all)
         await conn.commit()
 
     async with factory() as session:
-        """async with session.begin():
+        async with session.begin():
             info = MealInfo(
                     date=datetime.date.today(),
                     building=Building.cheonji
                 )
             info.dinner.append(
-                Meal(name="밥", type=MealType.dinner)
+                Resaurant(
+                    name="식당1", meal=[Meal(name="밥"), Meal(name="국")],
+                    type=MealType.dinner
+                )
             )
             info.dinner.append(
-                Meal(name="국", type=MealType.dinner)
+                Resaurant(
+                    name="식당2", meal=[Meal(name="라면")],
+                    type=MealType.dinner
+                )
             )
-            info.dinner.append(
-                Meal(name="토스트", type=MealType.breakfast)
+            info.breakfast.append(
+                Resaurant(
+                    name="식당1", meal=[Meal(name="토스트")],
+                    type=MealType.breakfast
+                )
             )
-            session.add(info)"""
+            session.add(info)
 
         result = await session.execute(select(MealInfo).order_by(MealInfo.id))
 

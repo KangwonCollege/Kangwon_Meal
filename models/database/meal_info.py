@@ -1,13 +1,11 @@
 import datetime
 
-from sqlalchemy.orm import relationship, DeclarativeBase, mapped_column, Mapped
-from sqlalchemy import Column, Integer, Date, Enum
-from typing import TYPE_CHECKING
+from sqlalchemy import Date, Enum
+from sqlalchemy.orm import relationship, mapped_column, Mapped
 
-from .base import Base
 from models.building import Building
-from models.meal_type import MealType
-from models.database.meal import Meal
+from models.database.restaurant import Resaurant
+from .base import Base
 
 
 class MealInfo(Base):
@@ -17,6 +15,9 @@ class MealInfo(Base):
     date: Mapped[datetime.date] = mapped_column(Date)
     building = mapped_column(Enum(Building))
 
-    breakfast: Mapped[list["Meal"]] = relationship(primaryjoin="and_(MealInfo.id==Meal.parent_id, " "Meal.type=='breakfast')")
-    lunch: Mapped[list["Meal"]] = relationship(primaryjoin="and_(MealInfo.id==Meal.parent_id, " "Meal.type=='lunch')")
-    dinner: Mapped[list["Meal"]] = relationship(primaryjoin="and_(MealInfo.id==Meal.parent_id, " "Meal.type=='dinner')")
+    breakfast: Mapped[list["Resaurant"]] = relationship(
+        primaryjoin="and_(MealInfo.id==Resaurant.parent_id, " "Resaurant.type=='breakfast')")
+    lunch: Mapped[list["Resaurant"]] = relationship(
+        primaryjoin="and_(MealInfo.id==Resaurant.parent_id, " "Resaurant.type=='lunch')")
+    dinner: Mapped[list["Resaurant"]] = relationship(
+        primaryjoin="and_(MealInfo.id==Resaurant.parent_id, " "Resaurant.type=='dinner')")
