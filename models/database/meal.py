@@ -7,7 +7,7 @@ from models.meal_type import MealType
 
 
 if TYPE_CHECKING:
-    from .restaurant import Resaurant
+    from .restaurant import Restaurant
 
 
 class Meal(Base):
@@ -16,5 +16,5 @@ class Meal(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name = mapped_column(String(32), nullable=True)
 
-    parent_id: Mapped[int] = mapped_column(ForeignKey("restaurant.id"))
-    parent: Mapped["Resaurant"] = relationship(back_populates="meal")
+    parent_id: Mapped[int] = mapped_column(ForeignKey("restaurant.id"), nullable=True)
+    parent: Mapped["Restaurant"] = relationship(back_populates="meal")

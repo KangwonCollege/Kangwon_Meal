@@ -68,7 +68,7 @@ class ChangeModel(BaseMeal):
     async def change_dorm_model(
             self,
             date: datetime.date = datetime.date.today()
-    ) -> any:
+    ) -> MealInfoModel:
         meal_models = []
 
         dorm_data = await self.load_dorm_meal()
