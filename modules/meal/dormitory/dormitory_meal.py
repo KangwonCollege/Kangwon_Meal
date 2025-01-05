@@ -11,7 +11,7 @@ from .dormitory_response import DormitoryResponse
 from .dormitory_meal_type import DomitoryMealType
 
 from utils.dict_to_form import dict_to_form
-from utils.weekday import weekday
+from utils.weekday import Weekday
 
 
 class DormitoryMeal(BaseMeal):
@@ -44,7 +44,7 @@ class DormitoryMeal(BaseMeal):
             dormitory_body = body.find("div", {"class": "tab-pane", "id": dormitory_type.value}).find_all("table", {"class": "table"})[1]
             meal = dormitory_body.find_all("tr")  # 1번(월요일) ~ 7번(일요일)
             for j, meal_info in enumerate(meal[1:]):
-                meal_date = weekday_response.Monday + datetime.timedelta(days=j)
+                meal_date = Weekday(date).monday + datetime.timedelta(days=j)
                 if meal_date not in self.data:
                     self.data[meal_date] = DormitoryResponse()
 

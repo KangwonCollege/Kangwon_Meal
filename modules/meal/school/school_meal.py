@@ -1,13 +1,16 @@
 import datetime
-
+import aiohttp
 import asyncio
+
+from ahttp_client import RequestCore, request, Query, Header
 from bs4 import BeautifulSoup
+from typing import Annotated
 
 from .school_meal_type import SchoolMealType
 from ..base_meal import BaseMeal
 from ..meal_response import MealResponse
 
-from utils.weekday import weekday
+from utils.weekday import Weekday
 
 
 class SchoolMeal(BaseMeal):
@@ -33,21 +36,15 @@ class SchoolMeal(BaseMeal):
             await self.update(building, date)
         return self.data[building][date]
 
-    async def update(self, building: SchoolMealType, date: datetime.date = None):
-        if date is None:
-            date = datetime.date.today()
-
-        weekday_response = weekday(date)
-        params = {
-            "sc1": building.value,
-            "sc5": (weekday_response.Monday + datetime.timedelta(days=-1)).strftime("%Y%m%d")
-        }
-        response = await self.requests.post(
-            "https://wwwk.kangwon.ac.kr/www/selecttnCafMenuListWU.do",
-            raise_on=True,
-            params=params
-        )
-        soup = BeautifulSoup(response.data, 'html.parser')
+    @request("POST", "/www/selecttnCafMenuListWU.do")
+    async def _fetch_meal(
+        self,
+        response: aiohttp.ClientResponse,
+        building: Annotated[SchoolMealType, Query],
+        date: Annotated[Optional[datetime.date], Query],
+    ):
+        text = await response.text()
+        soup = BeautifulSoup(text, 'html.parser')
 
         for br in soup.find_all("br"):
             br.replace_with("\n")
@@ -108,3 +105,13 @@ class SchoolMeal(BaseMeal):
                 restaurant_name: MealResponse()
                 for restaurant_name in restaurant_name_list[building]
             }
+        return 
+    
+
+    async def before_request(self, request_obj: RequestCore, path: str):
+        date: datetime.date = request_obj.params.pop("date") or datetime.date.today()
+        building: SchoolMealType = request_obj.params.pop("building")
+
+        request_obj.params["sc1"] = building.value
+        request_obj.params["sc5"] = (Weekday(date).monday + datetime.timedelta(days=-1)).strftime("%Y%m%d")
+        return request_obj, path
