@@ -3,15 +3,16 @@ import datetime
 import asyncio
 from bs4 import BeautifulSoup
 
-from modules.meal.baseMeal import BaseMeal
-from modules.meal.mealResponse import MealResponse
-from modules.meal.schoolMealType import SchoolMealType
+from .school_meal_type import SchoolMealType
+from ..base_meal import BaseMeal
+from ..meal_response import MealResponse
+
 from utils.weekday import weekday
 
 
 class SchoolMeal(BaseMeal):
     def __init__(self, loop: asyncio.AbstractEventLoop):
-        super(SchoolMeal, self).__init__(loop=loop)
+        super(SchoolMeal, self).__init__("https://wwwk.kangwon.ac.kr", loop=loop)
 
         self.data: dict[
             SchoolMealType,

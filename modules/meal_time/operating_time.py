@@ -1,7 +1,6 @@
 import datetime
 
 from pydantic import BaseModel
-from modules.meal.mealResponse import MealResponse
 
 
 class OperatingTime(BaseModel):

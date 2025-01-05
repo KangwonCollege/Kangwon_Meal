@@ -1,8 +1,8 @@
-from typing import Any
+from typing import Any, Optional
 
 
 class HttpException(Exception):
-    def __init__(self, response_code: int, data: dict[str, Any]):
+    def __init__(self, response_code: int, data: Optional[str]):
         self.response_code = response_code
         self.data = data
         super(HttpException, self).__init__("HTTP Response Error: {}".format(response_code))

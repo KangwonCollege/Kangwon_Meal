@@ -3,8 +3,8 @@ import aiohttp
 import asyncio
 from bs4 import BeautifulSoup
 
-from modules.meal.baseMeal import BaseMeal
-from modules.meal.dormitoryResponse import DormitoryResponse
+from ..base_meal import BaseMeal
+from .dormitory_response import DormitoryResponse
 
 from utils.dict_to_form import dict_to_form
 from utils.weekday import weekday
@@ -12,7 +12,7 @@ from utils.weekday import weekday
 
 class DormitoryMeal(BaseMeal):
     def __init__(self, loop: asyncio.AbstractEventLoop):
-        super(DormitoryMeal, self).__init__(loop)
+        super(DormitoryMeal, self).__init__("https://knudorm.kangwon.ac.kr", loop)
 
         self.data: dict[datetime.date, DormitoryResponse | None] = dict()
 
