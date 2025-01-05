@@ -1,7 +1,6 @@
 import logging
 import sqlalchemy
 
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
@@ -11,7 +10,6 @@ from utils.directory import directory
 from utils.import_supporter import ImportSupporter
 
 app = FastAPI()
-background_scheduler = AsyncIOScheduler()
 log = logging.getLogger(__name__)
 
 # Database
@@ -35,7 +33,5 @@ engine = create_async_engine(
 factory = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 view_image_supporter = ImportSupporter(app, factory)
-task_image_supporter = ImportSupporter(background_scheduler)
 
 view_image_supporter.load_modules('routers', directory)
-task_image_supporter.load_modules('tasks', directory, after_loaded=lambda: background_scheduler.start())
