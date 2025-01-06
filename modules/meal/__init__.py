@@ -1,9 +1,6 @@
-# Client
-from .client.dormitory_meal import DormitoryMeal
-from .client.school_meal import SchoolMeal
+from .dormitory.dormitory_meal import DormitoryMeal
+from .dormitory.dormitory_meal_type import DomitoryMealType
+from .dormitory.dormitory_response import DormitoryResponse
 
-# Model (Enumeration / Data Classes)
-from .model.dormitory_response import DormitoryResponse
-from .model.dormitory_meal_type import DomitoryMealType
-from .model.meal_response import MealResponse
-from .model.school_meal_type import SchoolMealType
+from .school.school_meal import SchoolMeal
+from .school.school_meal_type import SchoolMealType
