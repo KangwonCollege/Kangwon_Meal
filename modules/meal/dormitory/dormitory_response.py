@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .meal_response import MealResponse
+from ..meal_response import MealResponse
 
 
 class DormitoryResponse(BaseModel):
