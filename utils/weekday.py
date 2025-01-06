@@ -6,17 +6,17 @@ class Weekday:
         self.date = date
 
     @property
-    def monday() -> datetime.date:
+    def monday(self) -> datetime.date:
         return self.date + datetime.timedelta(days=-self.date.weekday())
 
     @property
-    def friday() -> datetime.date:
+    def friday(self) -> datetime.date:
         return self.monday + datetime.timedelta(days=4)
 
     @property
-    def saturday() -> datetime.date:
+    def saturday(self) -> datetime.date:
         return self.monday + datetime.timedelta(days=5)
 
     @property
-    def sunday() -> datetime.date:
+    def sunday(self) -> datetime.date:
         return self.monday + datetime.timedelta(days=6)
