@@ -4,7 +4,7 @@ import asyncio
 
 from ahttp_client import RequestCore, request, Query, Header
 from bs4 import BeautifulSoup
-from typing import Annotated
+from typing import Annotated, Optional
 
 from .school_meal_type import SchoolMealType
 from ..base_meal import BaseMeal
@@ -41,8 +41,10 @@ class SchoolMeal(BaseMeal):
         self,
         response: aiohttp.ClientResponse,
         building: Annotated[SchoolMealType, Query],
-        date: Annotated[Optional[datetime.date], Query],
+        date: Annotated[Optional[datetime.date], Query] = None,
     ):
+        if date is None:
+            date = datetime.date.today()
         text = await response.text()
         soup = BeautifulSoup(text, 'html.parser')
 
