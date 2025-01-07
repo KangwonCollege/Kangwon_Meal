@@ -3,7 +3,7 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from typing import TYPE_CHECKING
 
 from models.database.base import Base
-from models.meal_type import MealType
+from models.enumeration.meal_type import MealType
 
 
 if TYPE_CHECKING:

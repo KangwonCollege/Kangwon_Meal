@@ -6,9 +6,9 @@ from ahttp_client import RequestCore, request, Query, Header
 from bs4 import BeautifulSoup
 from typing import Annotated, Optional
 
-from ..base_meal import BaseMeal
-from .dormitory_response import DormitoryResponse
-from .dormitory_meal_type import DomitoryMealType
+from .base_meal import BaseMeal
+from models.dormitory_response import DormitoryResponse
+from models.enumeration.dormitory_meal_type import DomitoryMealType
 
 from utils.dict_to_form import dict_to_form
 from utils.weekday import Weekday

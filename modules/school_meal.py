@@ -6,9 +6,9 @@ from ahttp_client import RequestCore, request, Query, Header
 from bs4 import BeautifulSoup
 from typing import Annotated, Optional
 
-from .school_meal_type import SchoolMealType
-from ..base_meal import BaseMeal
-from ..meal_response import MealResponse
+from .base_meal import BaseMeal
+from models.enumeration.school_meal_type import SchoolMealType
+from models.meal_response import MealResponse
 
 from utils.weekday import Weekday
 
