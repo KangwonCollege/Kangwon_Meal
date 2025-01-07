@@ -45,6 +45,7 @@ class SchoolMeal(BaseMeal):
     ):
         if date is None:
             date = datetime.date.today()
+        weekday = Weekday(date)
         text = await response.text()
         soup = BeautifulSoup(text, 'html.parser')
 
@@ -65,7 +66,7 @@ class SchoolMeal(BaseMeal):
         if body.find('div', {"class": "over_scroll_table"}) is None:
 
             for index in range(7):
-                meal_date = weekday_response.Monday + datetime.timedelta(days=index)
+                meal_date = weekday.monday + datetime.timedelta(days=index)
                 self.data[building][meal_date] = {
                     restaurant_name: MealResponse()
                     for restaurant_name in restaurant_name_list[building]
@@ -87,7 +88,7 @@ class SchoolMeal(BaseMeal):
                 restaurant_name_max_key = index + int(restaurant_name_tag.get("rowspan", 1))
             meal_type = value.find('th', {"rowspan": None}).text
             for j, meal_info in enumerate(value.find_all("td")):
-                meal_date = weekday_response.Monday + datetime.timedelta(days=j)
+                meal_date = weekday.monday + datetime.timedelta(days=j)
                 if meal_date not in self.data[building]:
                     self.data[building][meal_date] = dict()
 
@@ -102,7 +103,7 @@ class SchoolMeal(BaseMeal):
                     self.data[building][meal_date][restaurant_name].dinner = meal_info.text.split('\n')
 
         for index in range(2):
-            meal_date = weekday_response.Sunday + datetime.timedelta(days=-(1 - index))
+            meal_date = weekday.sunday + datetime.timedelta(days=-(1 - index))
             self.data[building][meal_date] = {
                 restaurant_name: MealResponse()
                 for restaurant_name in restaurant_name_list[building]
@@ -111,7 +112,7 @@ class SchoolMeal(BaseMeal):
     
 
     async def before_request(self, request_obj: RequestCore, path: str):
-        date: datetime.date = request_obj.params.pop("date") or datetime.date.today()
+        date: datetime.date = request_obj.params.pop("date") if "date" in request_obj.params.keys() else datetime.date.today()
         building: SchoolMealType = request_obj.params.pop("building")
 
         request_obj.params["sc1"] = building.value
