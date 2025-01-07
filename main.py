@@ -19,7 +19,7 @@ database = {
     "drivername": "mysql+aiomysql",
     "username": database_parser.get(database_section, "user"),
     "host": database_parser.get(database_section, "host"),
-    # "password": database_parser.get(database_section, "password"),
+    "password": database_parser.get(database_section, "password"),
     "database": database_parser.get(database_section, "database"),
     "port": database_parser.getint(database_section, "port", fallback=3306),
 }
