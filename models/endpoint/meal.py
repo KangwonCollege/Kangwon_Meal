@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from models.database.restaurant import Resaurant
+from models.database.restaurant import Restaurant
 
 
 class Meal(BaseModel):
@@ -7,6 +7,6 @@ class Meal(BaseModel):
     meal: list[str]
 
     @classmethod
-    async def model_validate_sql(cls, data: Resaurant):
+    async def model_validate_sql(cls, data: Restaurant):
         meal = await data.awaitable_attrs.meal
         return cls(name=data.name, meal=[x.name for x in meal])

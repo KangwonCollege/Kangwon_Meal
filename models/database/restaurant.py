@@ -7,7 +7,7 @@ from models.enumeration.meal_type import MealType
 from models.database.meal import Meal
 
 
-class Resaurant(Base):
+class Restaurant(Base):
     __tablename__ = "restaurant"
 
     id: Mapped[int] = mapped_column(primary_key=True)
