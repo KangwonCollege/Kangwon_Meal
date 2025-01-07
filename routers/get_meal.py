@@ -26,7 +26,7 @@ async def get_meal(
     else:
         _building_for_fliter = list(Building)
 
-    result = await session.get_meal(_building_for_fliter, date)
+    result = await session.meal(_building_for_fliter, date)
     return [await MealInfoEndpoint.model_validate_sql(x) for x in result]
 
 

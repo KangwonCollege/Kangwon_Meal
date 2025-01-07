@@ -9,7 +9,7 @@ from repository.base_repository import BaseRepository
 
 
 class MealRepository(BaseRepository):
-    async def get_meal(
+    async def meal(
             self,
             building: list[Building],
             date: datetime.date
@@ -17,3 +17,12 @@ class MealRepository(BaseRepository):
         query = select(MealInfo).where(MealInfo.date == date).where(MealInfo.building.in_(building))
         result = await self._session.execute(query)
         return result.scalars().all()
+
+    async def meal_exist(
+            self,
+            building: list[Building],
+            date: datetime.date
+    ) -> bool:
+        query = select(MealInfo).where(MealInfo.date == date).where(MealInfo.building.in_(building)).exists()
+        result = await self._session.execute(query)
+        return result.scalar_one()
