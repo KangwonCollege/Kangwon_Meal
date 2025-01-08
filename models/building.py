@@ -20,6 +20,12 @@ class Building(Enum):
             return "새롬관"
         elif self == Building.dorm_2:
             return "이룸관"
+    
+    @property
+    def type(self) -> str:
+        if self == Building.dorm_1 or self == Building.dorm_2:
+            return "dormitory"
+        return "school"
 
     @classmethod
     def find_key(cls, key: str):
