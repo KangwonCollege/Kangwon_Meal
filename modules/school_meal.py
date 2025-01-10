@@ -33,7 +33,7 @@ class SchoolMeal(BaseMeal):
             self.data[building] = dict()
 
         if date not in self.data[building]:
-            await self.update(building, date)
+            await self._fetch_meal(building, date)
         return self.data[building][date]
 
     @request("POST", "/www/selecttnCafMenuListWU.do")
