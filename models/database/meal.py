@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class Meal(Base):
     __tablename__ = "meal"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name = mapped_column(String(32), nullable=True)
 
     parent_id: Mapped[int] = mapped_column(ForeignKey("restaurant.id"))
