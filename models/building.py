@@ -1,4 +1,5 @@
 from enum import Enum
+from models.enumeration.school_meal_type import SchoolMealType
 
 
 class Building(Enum):
@@ -27,9 +28,21 @@ class Building(Enum):
             return "dormitory"
         return "school"
 
+    @property
+    def school_meal_type(self) -> SchoolMealType:
+        if self.type == "dormitory":
+            raise NotImplementedError()
+
+        if self == Building.cheonji:
+            return SchoolMealType.CheonJi
+        elif self == Building.beakrok:
+            return SchoolMealType.BaekNok
+        elif self == Building.duri:
+            return SchoolMealType.Duri
+
     @classmethod
     def find_key(cls, key: str):
-        enum_val = [i for i in list(cls) if str(i) == key]
+        enum_val = [i for i in list(cls) if i.value == key]
         if len(enum_val) == 0:
             return key
         return enum_val[0]
