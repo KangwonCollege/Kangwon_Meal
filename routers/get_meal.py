@@ -31,25 +31,35 @@ async def get_meal(
         _building_for_fliter = list(Building)
 
     loop = asyncio.get_running_loop()
-
     repository_data = []
-    for building in _building_for_fliter:
-        exist = await session.meal_exist(building, date)
+    is_dormitory = False
+    
+    dormitory_client = DormitoryMeal(loop=loop)
+    school_client = SchoolMeal(loop=loop)
+    for _building in _building_for_fliter:
+        exist = await session.meal_exist(_building, date)
         if exist:
             continue
         
-        if building.type == "dormitory":
-            dormitory_client = DormitoryMeal(loop=loop)
+        if _building.type == "dormitory" and not is_dormitory:
+            is_dormitory = True
             await dormitory_client.meal(date=date)
-            for date, dormitory_response in dormitory_client.data.items():
+            for _date, dormitory_response in dormitory_client.data.items():
                 repository_data.extend(
-                    MealInfo.from_dormitory(date=date, data=dormitory_response)
+                    MealInfo.from_dormitory(date=_date, data=dormitory_response)
                 )
-            await dormitory_client.close()
-        else:
-            pass
-    # result = await session.meal(_building_for_fliter, date)
-    return [await MealInfoEndpoint.model_validate_sql(x) for x in repository_data]
+        elif _building.type == "school":
+            await school_client.meal(date=date, building=_building.school_meal_type)
+            for _date, school_response in school_client.data[_building.school_meal_type].items():
+                repository_data.append(
+                    MealInfo.from_school(date=_date, building=_building, data=school_response)
+                )
+    await dormitory_client.close()
+    await school_client.close()
+    
+    await session.meal_update(repository_data)
+    result = await session.meal(_building_for_fliter, date)
+    return [await MealInfoEndpoint.model_validate_sql(x) for x in result]
 
 
 def setup(client: FastAPI, _db: async_sessionmaker):
