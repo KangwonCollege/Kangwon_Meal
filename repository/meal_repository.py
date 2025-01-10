@@ -26,3 +26,11 @@ class MealRepository(BaseRepository):
         query = select(exists(MealInfo).where(MealInfo.date == date).where(MealInfo.building == building))
         result = await self._session.execute(query)
         return result.scalar_one()
+    
+    async def meal_update(
+            self,
+            data: Sequence[MealInfo]
+    ): 
+        self._session.add_all(data)
+        await self._session.commit()
+        return
