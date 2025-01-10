@@ -2,6 +2,7 @@ import datetime
 
 from sqlalchemy import Date, Enum
 from sqlalchemy.orm import relationship, mapped_column, Mapped
+from typing import Optional
 
 from models.building import Building
 from models.database.restaurant import Restaurant
@@ -51,3 +52,24 @@ class MealInfo(Base):
             cls._from_dormitory(date, Building.dorm_1, data.BTL1),
             cls._from_dormitory(date, Building.dorm_2, data.BTL2)
         ]
+
+    @classmethod
+    def from_school(cls, date: datetime.date, building: Building, data: dict[str, MealResponse | None]):
+        new_cls = cls(
+            date=date,
+            building=building
+        )
+        for restaurant_name, meal_response in data.items():
+            if meal_response.breakfast is not None:
+                new_cls.breakfast.append(
+                    Restaurant.from_data(meal_type=MealType.breakfast, meal=meal_response.breakfast, name=restaurant_name)
+                )
+            if meal_response.lunch is not None:
+                new_cls.lunch.append(
+                    Restaurant.from_data(meal_type=MealType.lunch, meal=meal_response.lunch, name=restaurant_name)
+                )
+            if meal_response.dinner is not None:
+                new_cls.dinner.append(
+                    Restaurant.from_data(meal_type=MealType.dinner, meal=meal_response.dinner, name=restaurant_name)
+                )
+        return new_cls
