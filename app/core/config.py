@@ -13,9 +13,17 @@ class Settings(BaseSettings):
     db_port: int = 3306
     db_path: str = "./kangwon_meal.db"
 
+    # Cloud SQL (Unix socket) — Cloud Run 배포 시 사용
+    # 형식: PROJECT_ID:REGION:INSTANCE_NAME
+    cloud_sql_instance: str | None = None
+
     @property
     def use_sqlite(self) -> bool:
-        return not all([self.db_host, self.db_user, self.db_password, self.db_name])
+        return not all([self.db_user, self.db_password, self.db_name])
+
+    @property
+    def use_cloud_sql(self) -> bool:
+        return self.cloud_sql_instance is not None and not self.use_sqlite
 
 
 @lru_cache
