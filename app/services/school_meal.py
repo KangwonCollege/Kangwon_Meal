@@ -44,7 +44,8 @@ class SchoolMeal(BaseMeal):
         for br in soup.find_all("br"):
             br.replace_with("\n")
 
-        body = soup.find("main", {"id": "sub-wrapper"}).find("div", {"class": "sub-contents-container"})
+        print(soup.prettify(), building, date)
+        body = soup.find("div", {"id": "sub-wrapper"}).find("main", {"class": "sub-contents-container"})
 
         restaurant_name_list = {
             SchoolMealType.CheonJi: ["멀티샵", "스낵", "양식", "천지 백두산", "하루 돈까스", "하루 정식"],
