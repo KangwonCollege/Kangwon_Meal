@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: kangwon-meal
+spec:
+  accessModes:
+    - ReadWriteOnce   # 한 번에 하나의 노드에서만 읽기/쓰기 가능
+  resources:
+    requests:
+      storage: 1Gi    # MySQL 데이터 저장 공간

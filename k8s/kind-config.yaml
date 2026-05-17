@@ -1,0 +1,9 @@
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+name: kangwon-meal
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30080   # Kind 노드 안의 포트 (Nginx NodePort)
+    hostPort: 8080          # 실제 PC에서 접근할 포트
+    protocol: TCP
