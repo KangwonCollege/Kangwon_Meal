@@ -45,9 +45,8 @@ async def lifespan(app: FastAPI):
     settings = get_settings()
     engine = _build_engine(settings)
 
-    if settings.use_sqlite:
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
     app.state.session_factory = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     yield
